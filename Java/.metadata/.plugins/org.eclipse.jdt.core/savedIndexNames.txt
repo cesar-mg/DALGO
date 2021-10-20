@@ -1,0 +1,4 @@
+INDEX VERSION 1.131+E:\Usuarios\Cesar Moreno\Uniandes\2021-20\DALGO\GitRepo\DALGO\.metadata\.plugins\org.eclipse.jdt.core
+1865797976.index
+2168112524.index
+766581317.index
