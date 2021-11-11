@@ -9,30 +9,28 @@ def bellman(g:list):
     sol=[]
     for x in range(len(g)):
         sinVisitar.append(x)
-        matrizRespuesta.append([100000000]*3)
-        matrizRespuesta[x][0]=x
-        
-    
-    
+    x=0
+    inicio=time.time()
     for origen in range(len(g)):
-        sol.append(matrizRespuesta)
+        if origen>0:
+            sol.append(matrizRespuesta)
         i=origen
         j=0
         visitados=[]
         pesoActual=100000000
-        if origen>0:
+        if origen>=0:
             matrizRespuesta=[]
             for x in range(len(g)):
                 matrizRespuesta.append([100000000]*3)
                 matrizRespuesta[x][0]=x
-        while len(visitados)<=len(sinVisitar):
+        while len(visitados)<len(sinVisitar):
             visitados.append(sinVisitar[i])
             while j<len(g[i]):
                 if i==origen:
                     matrizRespuesta[i][2]=0
                     matrizRespuesta[i][1]=i
-                if grafo[i][j]!=-1:  
-                    if matrizRespuesta[j][2]>grafo[i][j]+matrizRespuesta[i][2] and grafo[i][j]!=0: 
+                if grafo[i][j]!=-1:
+                    if matrizRespuesta[j][2]>grafo[i][j]+matrizRespuesta[i][2] and i!=j: 
                         matrizRespuesta[j][2]=grafo[i][j]+matrizRespuesta[i][2]
                         matrizRespuesta[j][1]=i
                         sigVertices.append(j)
@@ -43,29 +41,43 @@ def bellman(g:list):
                     sigVertices.remove(i)
                     break
             j=0
-    return(sol)
+    sol.append(matrizRespuesta)
+    respaldo=[]
+    i=0
+    j=0
+    for i in range(len(g)):
+        respaldo.append([])
+        for j in range(len(g)):
+            respaldo[i].append(sol[i][j][2])
+                
+    
+    fin=time.time()
+    print(f"\ntiempo de ejecucion {fin-inicio} segundos")
+    return(respaldo)
 
 def warshall(grafo:list):
     i=0
     j=0
     k=0
-    sol=[]
-    for x in range(len(grafo)):
-        sol.append([])
-        for m in range(len(grafo[0])):
-            sol[x].append(0)
+    inicio=time.time()
     for k in range(len(grafo)):
         for i in range(len(grafo)):
             for j in range(len(grafo[i])):
+                if grafo[i][k]+grafo[k][j]==3 and i==79 and j==89:
+                       caballo=[]
                 if grafo[i][j]==-1 and (grafo[i][k]!=-1 and grafo[k][j]!=-1) :
                     grafo[i][j]=grafo[i][k]+grafo[k][j]
                 elif grafo[i][k]!=-1 and grafo[k][j]!=-1:    
-                    grafo[i][j]=min(grafo[i][j],grafo[i][k]+grafo[k][j])
+                   grafo[i][j]=min(grafo[i][j],grafo[i][k]+grafo[k][j])
+                   
+    fin=time.time()
+    print(f"\ntiempo de ejecucion {fin-inicio} segundos")
     return grafo
 
 def dijkstra(grafo:list):
     solucion = []
     ## Realizamos dijkstra teniendo todos los vertices de origen.
+    inicio=time.time()
     for i in range(len(grafo)):
         costo = [sys.maxsize for i in range(len(grafo))]
         visitados = [False for i in range(len(grafo))]
@@ -106,4 +118,6 @@ def dijkstra(grafo:list):
 
         ## Agregamos los costos minimos del vertice actual.
         solucion.append(costo)
+    fin=time.time()
+    print(f"\ntiempo de ejecucion {fin-inicio} segundos")
     return solucion
