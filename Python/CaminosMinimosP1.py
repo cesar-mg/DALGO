@@ -1,5 +1,5 @@
 import sys
-
+import queue
 def bellman(g:list):
     grafo=g
     visitados=[]
@@ -84,6 +84,8 @@ def dijkstra(grafo:list):
                 if visitados[vertice] == False and costo[vertice] < minimo:
                     minimo = costo[vertice]
                     indice_menor = vertice
+
+            
             ## Visitamos el vertice, es decir que continuamos el algoritmo en este.
             visitados[indice_menor] = True
 
