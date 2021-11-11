@@ -1,3 +1,5 @@
+import sys
+
 def bellman(g:list):
     grafo=g
     visitados=[]
@@ -60,3 +62,46 @@ def warshall(grafo:list):
                 elif grafo[i][k]!=-1 and grafo[k][j]!=-1:    
                     grafo[i][j]=min(grafo[i][j],grafo[i][k]+grafo[k][j])
     return grafo
+
+def dijkstra(grafo:list):
+    solucion = []
+    ## Realizamos dijkstra teniendo todos los vertices de origen.
+    for i in range(len(grafo)):
+        costo = [sys.maxsize for i in range(len(grafo))]
+        visitados = [False for i in range(len(grafo))]
+        costo[i] = 0
+
+        ## Realizamos dijkstra.
+        paso = 0
+        while paso < len(grafo):
+
+            ## Buscamos el indice con el costo menor NO visitado.
+            indice_menor = 0
+            minimo = sys.maxsize
+            for vertice in range(len(grafo)):
+
+                ## Verificamos que no este visitado y su costo sea menor al menor actual.
+                if visitados[vertice] == False and costo[vertice] < minimo:
+                    minimo = costo[vertice]
+                    indice_menor = vertice
+            ## Visitamos el vertice, es decir que continuamos el algoritmo en este.
+            visitados[indice_menor] = True
+
+            ## Validamos que los arcos del vertice actual acorten algun camino.
+            indice_actual = 0
+            while indice_actual < len(grafo):
+                ## Validamos el arco. Si existe camino y no ha sido visitado.
+                if visitados[indice_actual] == False and grafo[indice_menor][indice_actual] > 0:
+
+                    ## Obtenemos el costo del camino nuevo.
+                    camino_nuevo = costo[indice_menor] + grafo[indice_menor][indice_actual]
+
+                    ## Verificamos si ahorra costo de un camino y acortamos en cuyo caso.
+                    if  camino_nuevo < costo[indice_actual]:
+                        costo[indice_actual] = camino_nuevo
+                indice_actual += 1
+            paso+=1
+
+        ## Agregamos los costos minimos del vertice actual.
+        solucion.append(costo)
+    return solucion
